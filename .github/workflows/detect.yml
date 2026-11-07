@@ -17,3 +17,12 @@ jobs:
           python-version: '3.11'
       - run: pip install torch --index-url https://download.pytorch.org/whl/cpu && pip install transformers requests
       - run: python detect.py "${{ inputs.gist }}"
+      - run: |
+          git config user.name paper-lint
+          git config user.email paper-lint@users.noreply.github.com
+          git checkout -B results
+          git add results.json
+          git commit -m "detection results ${{ github.run_id }}" || echo "nothing to commit"
+          git push -f origin results
+permissions:
+  contents: write
