@@ -1,0 +1,18 @@
+name: ai-detector
+on:
+  workflow_dispatch:
+    inputs:
+      gist:
+        description: 'Gist API URL of the draft'
+        default: 'https://api.github.com/gists/f690e437e7f28042776ed00015091bd9'
+        required: false
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: pip install torch --index-url https://download.pytorch.org/whl/cpu && pip install transformers requests
+      - run: python detect.py "${{ inputs.gist }}"
