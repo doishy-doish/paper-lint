@@ -42,6 +42,8 @@ for p in parts:
     avg, nw = score(p)
     results[title] = {"probs": [round(x, 4) for x in avg], "windows": nw, "chars": len(p)}
 print("RESULTS_JSON:" + json.dumps(results), flush=True)
+with open("results.json", "w") as f:
+    json.dump({"id2label": model.config.id2label, "sections": results, "doc_chars": len(text)}, f)
 sents = [s for s in re.split(r"[.!?]+", text) if s.strip()]
 lens = [len(s.split()) for s in sents]
 print("HEUR em_dashes=%d sent_mean=%.1f sent_stdev=%.1f nsent=%d" % (
